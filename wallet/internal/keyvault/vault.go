@@ -1,9 +1,13 @@
 package keyvault
 
 import (
+	"context"
 	"errors"
 	"sync"
 
+	"github.com/btcsuite/btcd/btcec/v2"
+	"github.com/btcsuite/btcd/btcec/v2/ecdsa"
+	"github.com/btcsuite/btcd/btcec/v2/schnorr"
 	"github.com/btcsuite/btcd/btcutil/v2/hdkeychain"
 	"github.com/btcsuite/btcwallet/snacl"
 	"github.com/btcsuite/btcwallet/wallet/internal/db"
@@ -61,6 +65,42 @@ func NewWalletVault(store db.Store, walletID uint32,
 		walletID:  walletID,
 		watchOnly: watchOnly,
 	}
+}
+
+// DerivePubKey reports that WalletVault does not yet expose key derivation.
+func (v *WalletVault) DerivePubKey(context.Context,
+	KeyLocator) (*btcec.PublicKey, error) {
+
+	return nil, ErrVaultSigningUnimplemented
+}
+
+// SignECDSA reports that WalletVault does not yet expose digest signing.
+func (v *WalletVault) SignECDSA(context.Context, KeyLocator, [32]byte) (
+	*ecdsa.Signature, error) {
+
+	return nil, ErrVaultSigningUnimplemented
+}
+
+// SignCompactECDSA reports that WalletVault does not yet expose digest signing.
+func (v *WalletVault) SignCompactECDSA(context.Context, KeyLocator, [32]byte,
+	bool) ([]byte, error) {
+
+	return nil, ErrVaultSigningUnimplemented
+}
+
+// SignSchnorr reports that WalletVault does not yet expose digest signing.
+func (v *WalletVault) SignSchnorr(context.Context, KeyLocator, [32]byte) (
+	*schnorr.Signature, error) {
+
+	return nil, ErrVaultSigningUnimplemented
+}
+
+// SignTweakedSchnorr reports that WalletVault does not yet expose digest
+// signing.
+func (v *WalletVault) SignTweakedSchnorr(context.Context, KeyLocator, [32]byte,
+	SchnorrKeyTweak) (*schnorr.Signature, error) {
+
+	return nil, ErrVaultSigningUnimplemented
 }
 
 // zero clears the runtime secret material held by the unlocked state.
